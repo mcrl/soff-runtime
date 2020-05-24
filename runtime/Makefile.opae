@@ -1,0 +1,26 @@
+include Makefile.common
+
+TARGET := $(SNUCLROOT)/runtime/libsoff_opae.so
+CXX    := g++
+
+CXX_FLAGS += -std=c++11 -DOPAE_PLATFORM
+ifeq ($(SOFF_DEBUG),1)
+	CXX_FLAGS += -DSNUCL_DEBUG
+endif
+
+ifeq ($(USE_ASE),1)
+	LIBRARY += -lopae-c-ase
+	CXX_FLAGS += -DUSE_ASE
+else
+	LIBRARY += -lopae-c
+endif
+
+SOURCES += $(wildcard opae/*.cpp)
+
+OBJ_DIR=objs/opae
+
+SUBDIRS=opae
+OBJ_SUBDIRS=$(patsubst %,$(OBJ_DIR)/%,$(SUBDIRS))
+DEPS_DIR=$(patsubst %,$(OBJ_DIR)/.deps/%,$(SUBDIRS))
+
+include Makefile.rules

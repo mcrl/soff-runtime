@@ -1,0 +1,14 @@
+RTDIR  := $(SNUCLROOT)/runtime
+PERL   := perl
+
+INCLUDES  := -I$(SNUCLROOT)/inc -I$(RTDIR) -I/usr/include
+
+CXX_FLAGS := -O3 -fPIC $(INCLUDES)
+
+LINK      := -shared -fPIC -Wl,--version-script=snucl.lds
+SOURCES   := $(wildcard *.cpp)
+LIBRARY   := -pthread -lrt -ldl
+
+OBJS=$(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SOURCES))
+DEPS=$(patsubst %.cpp,$(OBJ_DIR)/.deps/%.d,$(SOURCES))
+
